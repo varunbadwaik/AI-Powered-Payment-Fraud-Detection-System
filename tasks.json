@@ -1,0 +1,9 @@
+{
+  "tasks": [
+    "Setup backend",
+    "Build ML model",
+    "Create API",
+    "Build dashboard",
+    "Deploy system"
+  ]
+}

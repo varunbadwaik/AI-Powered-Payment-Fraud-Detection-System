@@ -1,0 +1,37 @@
+# ==============================================================================
+# AI-Powered Payment Fraud Detection System — Dependencies
+# ==============================================================================
+# Core Framework
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+streamlit>=1.38.0
+
+# Machine Learning
+scikit-learn>=1.5.0
+joblib>=1.4.0
+
+# Data Processing
+pandas>=2.2.0
+numpy>=1.26.0
+
+# Visualization (Streamlit charts)
+plotly>=5.22.0
+
+# Database
+aiosqlite>=0.20.0
+
+# Validation & Configuration
+pydantic>=2.8.0
+python-dotenv>=1.0.0
+pyyaml>=6.0.0
+
+# Generative AI (OpenRouter / LLaMA / GPT)
+openai>=1.0.0
+
+# HTTP Client (frontend → backend)
+requests>=2.32.0
+
+# Testing
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+httpx>=0.27.0

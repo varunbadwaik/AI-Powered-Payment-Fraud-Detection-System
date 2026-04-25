@@ -1,0 +1,43 @@
+# ==============================================================================
+# FraudShield — Git Ignore
+# ==============================================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+
+# Environment
+.env
+!.env.example
+
+# Model artifacts (too large for git — retrain on deploy)
+models/artifacts/*.joblib
+models/artifacts/*.json
+
+# Database
+data/*.db
+
+# Logs
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+*.png
+*.zip
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local

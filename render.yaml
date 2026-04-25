@@ -1,0 +1,43 @@
+# ==============================================================================
+# Render Deployment Configuration
+# ==============================================================================
+# Docs: https://docs.render.com/blueprint-spec
+
+services:
+  - type: web
+    name: fraudshield-api
+    runtime: python
+    region: oregon
+
+    # Build
+    buildCommand: |
+      pip install -r requirements.txt
+      python run.py --mode train
+
+    # Start
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+
+    # Environment
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: API_HOST
+        value: "0.0.0.0"
+      - key: DB_PATH
+        value: "data/fraud_detection.db"
+      - key: MODEL_DIR
+        value: "models/artifacts"
+      - key: LOG_LEVEL
+        value: "INFO"
+      - key: LLM_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: LLM_BASE_URL
+        value: "https://openrouter.ai/api/v1"
+      - key: LLM_MODEL
+        value: "meta-llama/llama-3-8b-instruct:free"
+
+    # Health check
+    healthCheckPath: /api/v1/health
+
+    # Auto-deploy on push
+    autoDeploy: true

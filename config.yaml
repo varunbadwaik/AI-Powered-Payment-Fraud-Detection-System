@@ -1,0 +1,4 @@
+project_name: ai_payment_fraud_detection
+framework: fastapi-streamlit
+ai_model: isolation_forest
+deployment: docker
