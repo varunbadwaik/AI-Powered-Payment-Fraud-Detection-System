@@ -40,13 +40,39 @@ const MetricRing = ({ value, label, color, icon: Icon, delay }) => {
 };
 
 export default function ModelMetricsPanel({ metrics }) {
-  const data = metrics || {
+  let data = {
     accuracy: 94.2,
     precision: 91.5,
     recall: 88.7,
     fpr: 3.2,
     f1: 90.1,
+    auc_roc: 0.967,
   };
+
+  if (metrics) {
+    if (metrics.xgboost || metrics.logistic_regression || metrics.isolation_forest) {
+      const best = metrics.xgboost || metrics.logistic_regression || metrics.isolation_forest;
+      if (best) {
+        data.accuracy = Number(((best.accuracy || 0) * 100).toFixed(1));
+        data.precision = Number(((best.precision_fraud || 0) * 100).toFixed(1));
+        data.recall = Number(((best.recall_fraud || 0) * 100).toFixed(1));
+        data.f1 = Number(((best.f1_fraud || 0) * 100).toFixed(1));
+        data.auc_roc = best.roc_auc ? Number(best.roc_auc.toFixed(3)) : 0.967;
+        
+        if (best.confusion_matrix && best.confusion_matrix.length === 2) {
+           const [[tn, fp], [fn, tp]] = best.confusion_matrix;
+           data.fpr = tn + fp > 0 ? Number(((fp / (tn + fp)) * 100).toFixed(1)) : 3.2;
+        }
+      }
+    } else if (metrics.accuracy !== undefined) {
+      data.accuracy = metrics.accuracy;
+      data.precision = metrics.precision;
+      data.recall = metrics.recall;
+      data.f1 = metrics.f1 || metrics.f1_score || 90.1;
+      data.fpr = metrics.fpr || metrics.false_positive_rate || 3.2;
+      data.auc_roc = metrics.auc_roc || 0.967;
+    }
+  }
 
   return (
     <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl h-full flex flex-col glass-card shadow-2xl relative overflow-hidden group">
@@ -80,7 +106,7 @@ export default function ModelMetricsPanel({ metrics }) {
           </div>
           <div className="flex flex-col">
             <span className="text-[8px] text-gray-500 uppercase font-black">AUC-ROC</span>
-            <span className="text-xs font-bold text-white">0.967</span>
+            <span className="text-xs font-bold text-white">{data.auc_roc}</span>
           </div>
         </div>
         <span className="text-[8px] text-gray-600 font-mono">EVAL_EPOCH: 847</span>
